@@ -22,8 +22,6 @@ namespace CollatzGraph {
             this.Paint += (s, e) => {
                 Graphics g = e.Graphics;
 
-                //g.Clear(Color.Black);
-                //g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                 using Pen p = new Pen(Color.FromArgb(10, Color.White), 2);
                 lock(syncObj) {
                     foreach(Point[] pts in points) g.DrawLines(p, pts);
@@ -51,6 +49,7 @@ namespace CollatzGraph {
 
         private void GenerateCurveSafe() {
             lock(syncObj) GenerateCurve();
+            this.Invalidate();
         }
 
         private void GenerateCurve() {
@@ -97,11 +96,10 @@ namespace CollatzGraph {
                     AddPoint(n);
                     n = Collatz(n);
                 } while(n > 1);
-                AddPoint(1);
-                pointsInSequence.Reverse();
+                //AddPoint(1);
+                //pointsInSequence.Reverse();
                 points.Add(pointsInSequence.ToArray());
             }
-            this.Invalidate();
         }
 
         private int Collatz(int n) {
